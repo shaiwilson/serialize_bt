@@ -14,7 +14,16 @@ class Serialize {
      */
 	public static void serialize(GenNode tree, PrintStream outputFile) throws IOException 
 	{
-
+		if(tree == null){
+			outputFile.print("(");
+		}
+		
+		
+		
+		
+		
+		
+		
 		
 	}
 
@@ -26,7 +35,34 @@ class Serialize {
 	 */
 	public static GenNode dserialize(PushbackReader inputFile) throws IOException 
 	{
-		return null;
+		System.out.println("read tree");
+		int data = inputFile.read();
+		
+		
+		// get size of data
+		int size = inputFile.read();
+		
+		if (size == 0){
+			return null;
+		}
+		
+		GenNode n = new GenNode((char) data);
+		
+		while(data != -1){
+
+			inputFile.read();
+			n.setLeftchild(dserialize(inputFile));
+			n.setRightsib(dserialize(inputFile));
+			
+			if ((char)data == "(")){
+				inputFile.unread(data);
+			}
+		}
+		
+		inputFile.close();
+		
+		return n;
+		
 	}
 
 	
