@@ -43,37 +43,36 @@ class Serialize {
 		// read in a single character
 		char data = (char) inputFile.read();
 		GenNode N = new GenNode((char) data);
-		GenNode m = null;
+
 		
 		// store a list of children for each node
-		ArrayList<GenNode> list = new ArrayList<GenNode>(); 
+		GenNode list[] = null;
 		
 //		end of file check
 		while(data != ')'){
 			
-			m = new GenNode((char) data);
-			list.add(m);
 			data = (char) inputFile.read();
-			
+			GenNode M = new GenNode((char) data);
+					
+			// find children of this node
 			for (GenNode tmp = N.leftchild(); tmp != null; tmp = tmp.rightsib())
 		    {
 				
-				list.add(tmp);
-				if (tmp.leftchild() == null)
-			    {
-					
-			    }
+				list[list.length -1] = tmp; 
+//				if (tmp.leftchild() == null)
+//			    {
+//					// made it to the end of the left most leaf
+//			    }
 				
 		    }
 			
-			
-//			if ((data == '('))
-//			{
-//				inputFile.unread(data);
-//				// add children as the left child of N
-//				N.setLeftchild(m);
-//			}
+			// add list of children as left node
+		
+			N.setLeftchild(M);
+
 		}
+		
+
 		
 		
 		
