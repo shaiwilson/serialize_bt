@@ -41,67 +41,35 @@ class Serialize {
 	{
 		
 		// read in a single character
-		char data = (char) inputFile.read();
-		
-		// first treeNode storing this character
-		GenNode N = new GenNode((char) data);
-
+		int first = inputFile.read();
+	
 		// store a list of children for each node
 		GenNode list[] = null;
 		
 //		end of file check
-		while(data != ')'){
+		if(first != -1){
 			
-			data = (char) inputFile.read();
-		
-			GenNode M = new GenNode((char) data);
+			char data = (char) first;
+			// first treeNode storing this character
+			GenNode N = new GenNode((char) data);
 			
-			if (M.leftchild() == null)
+			if (data == ')')
 		    {
-				// made it to the end of the left most leaf
+				return null;
 				
 		    }
 			else {
-				dserialize(inputFile);
-				// find children of this node
-				for (GenNode tmp = N.leftchild(); tmp != null; tmp = tmp.rightsib())
-			    {
-					
-					list[list.length -1] = tmp; 
-					if (tmp.leftchild() == null)
-				    {
-						// made it to the end of the left most leaf
-						
-				    }
+				N.setLeftchild(dserialize(inputFile));
+				N.setRightsib(dserialize(inputFile));
 					
 			    }
-			}
 			
-
-//			dserialize(inputFile);
-					
-			// find children of this node
-//			for (GenNode tmp = N.leftchild(); tmp != null; tmp = tmp.rightsib())
-//		    {
-//				
-//				list[list.length -1] = tmp; 
-//				if (tmp.leftchild() == null)
-//			    {
-//					// made it to the end of the left most leaf
-//					
-//			    }
-//				
-//		    }
-			
-			// add list of children as left node
-			N.setLeftchild(M);
-
+			return N;
+		} 
+		else 
+		{
+			return null;
 		}
-		
-
-		inputFile.close();
-		return N;
-		
 	}
 
 	
