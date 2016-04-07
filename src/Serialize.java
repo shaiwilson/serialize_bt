@@ -42,9 +42,10 @@ class Serialize {
 		
 		// read in a single character
 		char data = (char) inputFile.read();
+		
+		// first treeNode storing this character
 		GenNode N = new GenNode((char) data);
 
-		
 		// store a list of children for each node
 		GenNode list[] = null;
 		
@@ -52,30 +53,52 @@ class Serialize {
 		while(data != ')'){
 			
 			data = (char) inputFile.read();
+		
 			GenNode M = new GenNode((char) data);
+			
+			if (M.leftchild() == null)
+		    {
+				// made it to the end of the left most leaf
+				
+		    }
+			else {
+				dserialize(inputFile);
+				// find children of this node
+				for (GenNode tmp = N.leftchild(); tmp != null; tmp = tmp.rightsib())
+			    {
+					
+					list[list.length -1] = tmp; 
+					if (tmp.leftchild() == null)
+				    {
+						// made it to the end of the left most leaf
+						
+				    }
+					
+			    }
+			}
+			
+
+//			dserialize(inputFile);
 					
 			// find children of this node
-			for (GenNode tmp = N.leftchild(); tmp != null; tmp = tmp.rightsib())
-		    {
-				
-				list[list.length -1] = tmp; 
+//			for (GenNode tmp = N.leftchild(); tmp != null; tmp = tmp.rightsib())
+//		    {
+//				
+//				list[list.length -1] = tmp; 
 //				if (tmp.leftchild() == null)
 //			    {
 //					// made it to the end of the left most leaf
+//					
 //			    }
-				
-		    }
+//				
+//		    }
 			
 			// add list of children as left node
-		
 			N.setLeftchild(M);
 
 		}
 		
 
-		
-		
-		
 		inputFile.close();
 		return N;
 		
