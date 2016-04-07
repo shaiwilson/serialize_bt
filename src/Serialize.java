@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 class Serialize {
 
@@ -16,7 +17,8 @@ class Serialize {
 	{
 		if(tree == null)
 		{
-			outputFile.print("(");
+			char c = ')';
+			outputFile.print(c);
 		}
 		else{
 			outputFile.println(tree.element());
@@ -24,7 +26,6 @@ class Serialize {
 			serialize(tree.leftchild(), outputFile);
 			
 		}
-		
 		
 	}
 
@@ -34,35 +35,51 @@ class Serialize {
 	 * @return The resulting tree
 	 * @throws IOException
 	 */
+	
+
 	public static GenNode dserialize(PushbackReader inputFile) throws IOException 
 	{
-		return null;
-//		
-//		int data = inputFile.read();
-//		
-//		// get size of data
-//		int size = inputFile.read();
-//		
-//		if (size == 0){
-//			return null;
-//		}
-//		
-//		GenNode n = new GenNode((char) data);
-//		
-//		while(data != -1){
-//
-//			inputFile.read();
-//			n.setLeftchild(dserialize(inputFile));
-//			n.setRightsib(dserialize(inputFile));
-//			
-////			if ((char)data == "(")){
-////				inputFile.unread(data);
-////			}
-//		}
-//		
-//		inputFile.close();
-//		return n;
-//		
+		
+		// read in a single character
+		char data = (char) inputFile.read();
+		GenNode N = new GenNode((char) data);
+		GenNode m = null;
+		
+		// store a list of children for each node
+		ArrayList<GenNode> list = new ArrayList<GenNode>(); 
+		
+//		end of file check
+		while(data != ')'){
+			
+			m = new GenNode((char) data);
+			list.add(m);
+			data = (char) inputFile.read();
+			
+			for (GenNode tmp = N.leftchild(); tmp != null; tmp = tmp.rightsib())
+		    {
+				
+				list.add(tmp);
+				if (tmp.leftchild() == null)
+			    {
+					
+			    }
+				
+		    }
+			
+			
+//			if ((data == '('))
+//			{
+//				inputFile.unread(data);
+//				// add children as the left child of N
+//				N.setLeftchild(m);
+//			}
+		}
+		
+		
+		
+		inputFile.close();
+		return N;
+		
 	}
 
 	
